@@ -13,14 +13,15 @@
 		<p:commandButton value="Novo" onclick="PF('dlgForNovo').show()" />
 		<h:form id="formFornecedor">
 			<p:dataTable id="tbFornecedor" emptyMessage="Nenhum registro"
-				value="#{MBFornecedores.itens}" var="item" paginator="true" rows="10">
+				value="#{MBFornecedores.itens}" var="item" widgetVar="tabelaFornecedores"
+				filteredValue="#{MBFornecedores.itensFiltrados}" paginator="true" rows="10">
 				<f:facet name="header">Lista de fornecedores</f:facet>
-				<p:column headerText="Id" sortBy="#{item.codigo}">
+				<p:column headerText="Id" sortBy="#{item.codigo}" >
 					<h:outputText value="#{item.codigo}" />
 				</p:column>
 
 				<p:column headerText="Descricao" sortBy="#{item.descricao}"
-					filterBy="#{item.descricao}">
+					filterBy="#{item.descricao}"> 
 					<h:outputText value="#{item.descricao}" />
 				</p:column>
 
@@ -64,9 +65,9 @@
 					<p:commandButton value="Confirmar"
 						style="margin-right:20px;" 
 						actionListener="#{MBFornecedores.inserirFornecedor}"
-						onclick="PF('dlgForNovo').hide();"
+						onclick="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();"
 						update=":formFornecedor:tbFornecedor :msgGlobal"/>
-					<p:commandButton value="Cancelar" onclick="PF('dlgForNovo').hide()" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -88,9 +89,9 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Alterar"
 						actionListener="#{MBFornecedores.alterarFornecedor(MBFornecedores.fornecedores.codigo,MBFornecedores.fornecedores.descricao)}"
-						onclick="PF('dlgForAlterar').hide(); document.getElementById('txtAlt').value('');"
+						onclick="PF('dlgForAlterar').hide(); document.getElementById('txtAlt').value(''); PF('tabelaFornecedor').clearFilters();"
 						update=":formFornecedor:tbFornecedor :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgAlterar').hide()" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgAlterar').hide(); tabelaFornecedor.clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -109,9 +110,9 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="remover"
 						actionListener="#{MBFornecedores.removerFornecedor(MBFornecedores.fornecedores.codigo)}"
-						onclick="PF('dlgForRemover').hide(); document.getElementById('txtDesc').value('');"
+						onclick="PF('dlgForRemover').hide(); document.getElementById('txtDesc').value(''); PF('tabelaFornecedor').clearFilters();"
 						update=":formFornecedor:tbFornecedor :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgForRemover').hide()" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgForRemover').hide(); PF('tabelaFornecedor').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

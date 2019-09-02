@@ -29,15 +29,5 @@ public class ConexaoFactory {
 		return conexao;
 	}
 	
-	public static void main (String[] args)  {
-		//Fornecedores fornecedor = new Fornecedores(null, "odontoprev",1);
-		Fornecedores fornecedor = new Fornecedores();
-		//fornecedorDao.insert(fornecedor);
-		Produto produto = new Produto();
-		produto = produtoDao.findById(2);
-		fornecedor = fornecedorDao.findById(produto.getIdFornecedor());
-		System.out.println("id " + produto.getCodigo() + " descricao " + produto.getDescricao() + " Fornecedor "+ fornecedor.getDescricao());
-		//System.out.println("id " + fornecedor.getCodigo() + " descricao " + fornecedor.getDescricao());
-		System.out.print("conexao success");
-	}
+	
 }
