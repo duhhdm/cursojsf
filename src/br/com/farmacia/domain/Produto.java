@@ -8,23 +8,15 @@ public class Produto {
 	private Double precoFinal;
 	private Integer quantidade;
 	private Integer ativo;
-	private Integer idFornecedor;
+	private Fornecedores idFornecedor = new Fornecedores();
 	
 	public Produto() {
 		
 	}
 	
-	public Produto(Integer codigo, String descricao, Double precoFornecedor,Double precoFinal, Integer quantidade, Integer idFornecedor) {
-		this.codigo=codigo;
-		this.descricao=descricao;
-		this.precoFornecedor=precoFornecedor;
-		this.precoFinal=precoFinal;
-		this.quantidade=quantidade;
-		this.idFornecedor=idFornecedor;
-	}
 	
 	public Produto(Integer codigo, String descricao, Double precoFornecedor, Double precoFinal, Integer quantidade,
-			Integer ativo, Integer idFornecedor) {
+			Integer ativo, Fornecedores idFornecedor) {
 		super();
 		this.codigo = codigo;
 		this.descricao = descricao;
@@ -83,11 +75,11 @@ public class Produto {
 		this.quantidade = quantidade;
 	}
 
-	public Integer getIdFornecedor() {
+	public Fornecedores getIdFornecedor() {
 		return idFornecedor;
 	}
 
-	public void setIdFornecedor(Integer idFornecedor) {
+	public void setIdFornecedor(Fornecedores idFornecedor) {
 		this.idFornecedor = idFornecedor;
 	}
 	

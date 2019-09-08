@@ -16,12 +16,13 @@ import br.com.farmacia.util.JSFUtil;
 @ManagedBean(name = "MBFornecedores")
 @ViewScoped
 public class FornecedoresBean {
-	//private ListDataModel<FornecedorDTO> itens;
+
+	//variaveis conectam com o view
 	private ArrayList<FornecedorDTO> itens;
 	private ArrayList<FornecedorDTO> itensFiltrados;
-
 	private Fornecedores fornecedores = new Fornecedores();
-
+	
+	//conexao dao
 	private FornecedorDAO forDao = new FornecedorDAO();
 
 	@PostConstruct
@@ -58,9 +59,14 @@ public class FornecedoresBean {
 	
 	public void removerFornecedor(Integer id) {
 		try {
-			forDao.remove(id);
-			preparaPesquisa();
-			JSFUtil.adicionarMensagemSucesso("", "Fornecedor removido com sucesso");
+			if(!forDao.temProduto(id)) {
+				forDao.remove(id);
+				preparaPesquisa();
+				JSFUtil.adicionarMensagemSucesso("", "Fornecedor removido com sucesso");
+			}
+			else {
+				JSFUtil.adicionarMensagemErro("", "ERRO: existem produtos vinculados ao fornecedor");
+			}
 		}catch(Exception e){
 			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel remover dados");
 			e.printStackTrace();
@@ -104,7 +110,9 @@ public class FornecedoresBean {
 		return itensFiltrados;
 	}
 
-	public void setItensAtivos(ArrayList<FornecedorDTO> itensFiltrados) {
+	public void setItensFiltrados(ArrayList<FornecedorDTO> itensFiltrados) {
 		this.itensFiltrados = itensFiltrados;
-	}	
+	}
+
+	
 }

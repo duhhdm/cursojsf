@@ -96,4 +96,26 @@ public class FornecedorDAO {
 		}
 		return false;
 	}
+	
+	public Boolean temProduto(Integer id) {
+		String sql = "SELECT idProduto FROM tbProduto WHERE fornecedorId="+id+" AND ativo=1";
+		Statement ps = null;
+		ResultSet rs =null;
+		try {
+			ps = ConexaoFactory.Conectar().createStatement();
+			rs = ps.executeQuery(sql);
+			if(rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 }
