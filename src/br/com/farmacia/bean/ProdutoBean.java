@@ -19,7 +19,7 @@ public class ProdutoBean {
 	
 	private List<Produto> itens;
 	private List<Produto> itensFiltrados;
-	private List<Fornecedores> fornecedor;
+	private List<Fornecedores> fornecedor = new ArrayList<Fornecedores>();
 	private Produto produto = new Produto();
 	private ProdutoDAO pDao = new ProdutoDAO();
 	private FornecedorDAO fDao = new FornecedorDAO();
@@ -28,7 +28,7 @@ public class ProdutoBean {
 	public void init() {
 		try {
 			itens = pDao.findAll();
-			setFornecedor(fDao.findAll());
+			fornecedor = listaFuncionario();
 		}catch(Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
 			e.printStackTrace();
@@ -68,6 +68,16 @@ public class ProdutoBean {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public List<Fornecedores> listaFuncionario() {
+		List<Fornecedores> lista = fDao.findAll();
+		List<Fornecedores> aux = new ArrayList<Fornecedores>();
+		for(Fornecedores i:lista) {
+			if(i.getAtivo()==1)
+				fornecedor.add(i);
+		}
+		return aux;
 	}
 	
 	public List<Produto> getItens() {

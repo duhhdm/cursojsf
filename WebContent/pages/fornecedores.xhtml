@@ -57,7 +57,8 @@
 			<h:form>
 				<h:panelGrid columns="2">
 					<p:outputLabel value="Descrição: " />
-					<h:inputText size="30" maxlength="50"
+					<h:inputText size="30" maxlength="50" required="true"
+						requiredMessage="O campo descrição é obrigatorio"
 						value="#{MBFornecedores.fornecedores.descricao}"
 						id="txtDesc"></h:inputText>
 				</h:panelGrid>
@@ -65,9 +66,11 @@
 					<p:commandButton value="Confirmar"
 						style="margin-right:20px;" 
 						actionListener="#{MBFornecedores.inserirFornecedor}"
-						onclick="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();"
+						oncomplete="validaCampo(xhr, status, args, 'dlgForNovo', 'tabelaFornecedor');"
 						update=":formFornecedor:tbFornecedor :msgGlobal"/>
-					<p:commandButton value="Cancelar" onclick="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						oncomplete="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -80,7 +83,7 @@
 					<h:outputText value="Codigo: " />
 					<h:outputText value="#{MBFornecedores.fornecedores.codigo}"/>
 					<h:outputText value="Descrição: " />
-					<h:inputText size="30" maxlength="50"
+					<h:inputText size="30" maxlength="50" required="true" requiredMessage="Campo descrição não pode ser vazio"
 						value="#{MBFornecedores.fornecedores.descricao}"
 						id="txtAlt"></h:inputText>
 				</h:panelGrid>
@@ -89,9 +92,11 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Alterar"
 						actionListener="#{MBFornecedores.alterarFornecedor(MBFornecedores.fornecedores.codigo,MBFornecedores.fornecedores.descricao)}"
-						onclick="PF('dlgForAlterar').hide(); document.getElementById('txtAlt').value(''); PF('tabelaFornecedor').clearFilters();"
+						oncomplete="validaCampo(xhr, status, args, 'dlgForNovo', 'tabelaFornecedor');"
 						update=":formFornecedor:tbFornecedor :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgAlterar').hide(); tabelaFornecedor.clearFilters();" />
+					<p:commandButton value="Cancelar" 
+						process="@this"
+						onclick="PF('dlgAlterar').hide(); tabelaFornecedor.clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -112,7 +117,9 @@
 						actionListener="#{MBFornecedores.removerFornecedor(MBFornecedores.fornecedores.codigo)}"
 						onclick="PF('dlgForRemover').hide(); document.getElementById('txtDesc').value(''); PF('tabelaFornecedor').clearFilters();"
 						update=":formFornecedor:tbFornecedor :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgForRemover').hide(); PF('tabelaFornecedor').clearFilters();" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						onclick="PF('dlgForRemover').hide(); PF('tabelaFornecedor').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

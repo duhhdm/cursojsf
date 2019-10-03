@@ -86,25 +86,25 @@
 			<h:form id="frmNovo">
 				<h:panelGrid columns="2" >
 					<p:outputLabel value="Descrição: " />
-					<h:inputText size="30" maxlength="50"
+					<h:inputText size="30" maxlength="50" required="true" requiredMessage="O campo descrição é obrigatorio."
 						value="#{MBProduto.produto.descricao}" id="txtDesc"></h:inputText>
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:outputLabel value="Preço fornecedor: " />
-					<h:inputText size="3" maxlength="50"
+					<h:inputText size="3" maxlength="50" required="true" requiredMessage="O campo preço fornecedor é obrigatorio."
 						value="#{MBProduto.produto.precoFornecedor}" id="txtPrecoFor"></h:inputText>
 				</h:panelGrid>
 
 				<h:panelGrid columns="2">
 					<p:outputLabel value="Preço final: " />
-					<h:inputText size="3" maxlength="50"
+					<h:inputText size="3" maxlength="50" required="true" requiredMessage="O campo Preço final é obrigatorio."
 						value="#{MBProduto.produto.precoFinal}" id="txtPrecoFin"></h:inputText>
 				</h:panelGrid>
 
 				<h:panelGrid columns="4" id="pnNovo">
 					<p:outputLabel value="Quantidade: " />
-					<h:inputText size="1" maxlength="50"
+					<h:inputText size="1" maxlength="50" required="true" requiredMessage="O campo quantidade é obrigatorio."
 						value="#{MBProduto.produto.quantidade}" id="txtQuan"></h:inputText>
 					<p:outputLabel value="Fornecedor: " />
 					<p:selectOneMenu id="console" style="width:125px" value="#{MBProduto.produto.idFornecedor.codigo}">
@@ -120,6 +120,7 @@
 						onclick="PF('dlgForNovo').hide(); PF('tabelaProduto').clearFilters();"
 						update=":formProduto:tbProduto :msgGlobal" />
 					<p:commandButton value="Cancelar"
+						process="@this"
 						onclick="PF('dlgForNovo').hide(); PF('tabelaProduto').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
@@ -151,7 +152,9 @@
 						actionListener="#{MBProduto.alterarProduto(MBProduto.produto.codigo,MBProduto.produto.descricao,MBProduto.produto.precoFornecedor,MBProduto.produto.precoFinal)}"
 						onclick="PF('dlgForAlterar').hide(); document.getElementById('txtAlt').value(''); PF('tabelaProduto').clearFilters();"
 						update=":formProduto:tbProduto :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgAlterar').hide(); PF('tabelaProduto').clearFilters();" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						onclick="PF('dlgAlterar').hide(); PF('tabelaProduto').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
@@ -172,7 +175,9 @@
 						actionListener="#{MBProduto.removerProduto(MBProduto.produto.codigo)}"
 						onclick="PF('dlgForRemover').hide(); document.getElementById('txtDesc').value(''); PF('tabelaProduto').clearFilters();"
 						update=":formProduto:tbProduto :msgGlobal" />
-					<p:commandButton value="Cancelar" onclick="PF('dlgForRemover').hide(); PF('tabelaProduto').clearFilters();" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						onclick="PF('dlgForRemover').hide(); PF('tabelaProduto').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
