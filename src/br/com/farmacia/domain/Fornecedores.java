@@ -1,5 +1,6 @@
 package br.com.farmacia.domain;
 
+
 public class Fornecedores {
 	
 	private Integer codigo;
