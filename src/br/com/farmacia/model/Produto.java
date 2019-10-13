@@ -1,13 +1,47 @@
-package br.com.farmacia.domain;
+package br.com.farmacia.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import br.com.farmacia.dto.enums.Ativo;
+
+@Entity
+@Table(name="tbproduto")
 public class Produto {
 	
+	@Id
+	@Column(name = "idProduto")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer codigo;
+	
+	@Column(name = "descricao")
 	private String descricao;
+	
+	@Column(name = "precoFornecedor")
 	private Double precoFornecedor;
+	
+	@Column(name = "precoFinal")
 	private Double precoFinal;
+	
+	@Column(name = "quantidade")
 	private Integer quantidade;
-	private Integer ativo;
+	
+	@Column(name = "ativo")
+	@Enumerated(EnumType.STRING)
+	private Ativo ativo;
+	
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@JoinColumn(name = "fornecedorId", referencedColumnName = "idFornecedor", nullable = false)
 	private Fornecedores idFornecedor = new Fornecedores();
 	
 	public Produto() {
@@ -16,7 +50,7 @@ public class Produto {
 	
 	
 	public Produto(Integer codigo, String descricao, Double precoFornecedor, Double precoFinal, Integer quantidade,
-			Integer ativo, Fornecedores idFornecedor) {
+			Ativo ativo, Fornecedores idFornecedor) {
 		super();
 		this.codigo = codigo;
 		this.descricao = descricao;
@@ -59,11 +93,11 @@ public class Produto {
 		this.precoFinal = precoFinal;
 	}
 
-	public Integer getAtivo() {
+	public Ativo getAtivo() {
 		return ativo;
 	}
 
-	public void setAtivo(Integer ativo) {
+	public void setAtivo(Ativo ativo) {
 		this.ativo = ativo;
 	}
 

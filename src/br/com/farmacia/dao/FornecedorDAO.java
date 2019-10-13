@@ -7,8 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.farmacia.domain.Fornecedores;
 import br.com.farmacia.factory.ConexaoFactory;
+import br.com.farmacia.model.Fornecedores;
 
 public class FornecedorDAO {
 

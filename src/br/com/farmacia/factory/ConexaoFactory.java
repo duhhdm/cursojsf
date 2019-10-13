@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 import br.com.farmacia.dao.FornecedorDAO;
 import br.com.farmacia.dao.ProdutoDAO;
-import br.com.farmacia.domain.Fornecedores;
-import br.com.farmacia.domain.Produto;
+import br.com.farmacia.model.Fornecedores;
+import br.com.farmacia.model.Produto;
 
 public class ConexaoFactory {
 	private static final String USUARIO = "root";
