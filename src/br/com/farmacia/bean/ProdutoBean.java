@@ -9,8 +9,8 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.farmacia.dao.FornecedorDAO;
 import br.com.farmacia.dao.ProdutoDAO;
-import br.com.farmacia.domain.Fornecedores;
-import br.com.farmacia.domain.Produto;
+import br.com.farmacia.model.Fornecedores;
+import br.com.farmacia.model.Produto;
 import br.com.farmacia.util.JSFUtil;
 
 @ManagedBean(name = "MBProduto")
