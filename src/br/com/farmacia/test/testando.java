@@ -21,7 +21,7 @@ public class testando {
 		EntityManager manager = factory.createEntityManager();
 		
 		manager.getTransaction().begin();
-		System.out.println(produto.getIdFornecedor().getCodigo());
+		manager.persist(produto);
 		manager.close();
 	}
 }

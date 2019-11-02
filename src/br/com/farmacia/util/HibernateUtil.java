@@ -2,43 +2,29 @@ package br.com.farmacia.util;
 
 
 
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class HibernateUtil {
 
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static final EntityManager sessionFactory = buildSessionFactory();
 
-    private static SessionFactory buildSessionFactory() {
+    private static EntityManager buildSessionFactory() {
         try {
-            // Cria uma conexão a partir do hibernate.cfg.xml
            
-        	Configuration configuration = new Configuration();
-        	configuration.configure();
-        	
-        	ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-        			.applySettings(configuration.getProperties()).build();
-        	
-        	
-        	SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        	
-        	return sessionFactory;
-        	
-        	
-        	//return new Configuration().configure().buildSessionFactory(
-			  //  new StandardServiceRegistryBuilder().build() );
+        	EntityManagerFactory factory = Persistence.createEntityManagerFactory("Farmacias");
+    		EntityManager manager = factory.createEntityManager();
+        	return manager;
         }
         catch (Throwable ex) {
-            // Mensagem de erro ao conectar
             System.err.println("Erro na conexão." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public static EntityManager getSessionFactory() {
+    	return sessionFactory;
     }
 
 }

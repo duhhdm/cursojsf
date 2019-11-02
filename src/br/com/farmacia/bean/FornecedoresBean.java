@@ -9,7 +9,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.ListDataModel;
 
 import br.com.farmacia.dao.FornecedorDAO;
+import br.com.farmacia.dao.FornecedorHibernateDAO;
 import br.com.farmacia.dto.FornecedorDTO;
+import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
 import br.com.farmacia.util.JSFUtil;
 
@@ -23,18 +25,18 @@ public class FornecedoresBean {
 	private Fornecedores fornecedores = new Fornecedores();
 	
 	//conexao dao
-	private FornecedorDAO forDao = new FornecedorDAO();
+	private FornecedorHibernateDAO forDao = new FornecedorHibernateDAO();
 
 	@PostConstruct
 	public void preparaPesquisa() {
 		try {
-			List<Fornecedores> lista = forDao.findAll();
+			List<Fornecedores> lista = forDao.listarTeste();
 			List<FornecedorDTO> listaAtivos = new ArrayList<FornecedorDTO>();
 			for( Fornecedores aux: lista) {
 				FornecedorDTO aux1 = new FornecedorDTO();
 				aux1.setCodigo(aux.getCodigo());
 				aux1.setDescricao(aux.getDescricao());
-				if(aux.getAtivo()!=0) {
+				if(aux.getAtivo().equals(Ativo.SIM)) {
 					listaAtivos.add(aux1);
 				}
 			}
@@ -47,8 +49,8 @@ public class FornecedoresBean {
 
 	public void inserirFornecedor() {
 		try {
-			fornecedores.setAtivo(1);
-			forDao.insert(fornecedores);
+			fornecedores.setAtivo(Ativo.SIM);
+			forDao.salvar(fornecedores);
 			preparaPesquisa();
 			JSFUtil.adicionarMensagemSucesso("", "Fornecedor: "+fornecedores.getDescricao()+" Inserido com sucesso");
 		}catch(Exception e) {
@@ -60,7 +62,9 @@ public class FornecedoresBean {
 	public void removerFornecedor(Integer id) {
 		try {
 			if(!forDao.temProduto(id)) {
-				forDao.remove(id);
+				Fornecedores aux = forDao.buscarPorId(id);
+				aux.setAtivo(Ativo.NAO);
+				forDao.atualizar(aux);
 				preparaPesquisa();
 				JSFUtil.adicionarMensagemSucesso("", "Fornecedor removido com sucesso");
 			}
@@ -76,11 +80,12 @@ public class FornecedoresBean {
 	public void alterarFornecedor(Integer id, String value) {
 		try {
 			Fornecedores aux = new Fornecedores();
-			aux = forDao.findById(id);
+			aux = forDao.buscarPorId(id);
 			if(value.equals(aux.getDescricao())) {
 				JSFUtil.adicionarMensagemErro("", "ERRO: Não houve alteração dos dados");
 			}else {
-				forDao.update(id, value);
+				aux.setDescricao(value);
+				forDao.atualizar(aux);
 				JSFUtil.adicionarMensagemSucesso("", "Fornecedor "+value+" alterado com sucesso");
 			}
 			preparaPesquisa();
