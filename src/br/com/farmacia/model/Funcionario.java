@@ -16,7 +16,7 @@ import br.com.farmacia.dto.enums.Ativo;
 public class Funcionario {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idFuncionario")
 	private Long codigo;
 	

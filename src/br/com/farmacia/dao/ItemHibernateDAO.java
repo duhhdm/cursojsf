@@ -6,52 +6,52 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.farmacia.model.Produto;
+import br.com.farmacia.model.Item;
 import br.com.farmacia.util.HibernateUtil;
 
-public class ProdutoHibernateDAO {
+public class ItemHibernateDAO {
 
 	@PersistenceContext
 	EntityManager conn = HibernateUtil.getSessionFactory();
 
-	public void salvar(Produto produto) {
+	public void salvar(Item item) {
 		conn.getTransaction().begin();
-		conn.persist(produto);
+		conn.persist(item);
 		conn.getTransaction().commit();
 		
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Produto> listar() {
-		EntityManager conn = HibernateUtil.getSessionFactory();
+	public List<Item> listar() {
 		conn.getTransaction().begin();
-		Query query = conn.createQuery("SELECT produto FROM Produto produto");
-		List<Produto> lista = query.getResultList();
+		Query query = conn.createQuery("SELECT item FROM Item item");
+		List<Item> lista = query.getResultList();
 		conn.getTransaction().commit();
 		return lista;
 	}
 
-	public Produto buscarPorId(Integer id) {
-		Produto result = new Produto();
+	public Item buscarPorId(Integer id) {
+		Item result = new Item();
 		conn.getTransaction().begin();
-		Query query = conn.createQuery("SELECT produto FROM Produto produto WHERE produto.id=:id");
+		Query query = conn.createQuery("SELECT item FROM Item item WHERE item.id=:id");
 		query.setParameter("id", id);
-		result = (Produto) query.getSingleResult();
+		result = (Item) query.getSingleResult();
 		conn.getTransaction().commit();
 		return result;
 	}
 
-	public void deletar(Produto produto) {
+	public void deletar(Item item) {
 		conn.getTransaction().begin();
-		conn.remove(produto);
+		conn.remove(item);
 		conn.getTransaction().commit();
 		
 	}
 
-	public void atualizar(Produto produto) {
+	public void atualizar(Item item) {
 		conn.getTransaction().begin();
-		conn.merge(produto);
+		conn.merge(item);
 		conn.getTransaction().commit();
 		
 	}
+	
 }

@@ -75,6 +75,17 @@
 						<f:setPropertyActionListener target="#{MBProduto.produto.precoFinal}"
 							 value="#{item.precoFinal}" />
 					</p:commandButton>
+					
+					<p:commandButton icon="ui-icon-plus" 
+						style="margin-right:20px;" 
+						title="Icon Only"
+						onclick="PF('dlgForAdicionar').show()"
+						update=":frmAdicionar:pnAdicionar">
+						<f:setPropertyActionListener target="#{MBProduto.produto.codigo}"
+							 value="#{item.codigo}" />
+						<f:setPropertyActionListener target="#{MBProduto.produto.descricao}"
+							 value="#{item.descricao}" />
+					</p:commandButton>
 				</p:column>
 				
 			</p:dataTable>
@@ -178,6 +189,34 @@
 					<p:commandButton value="Cancelar"
 						process="@this"
 						onclick="PF('dlgForRemover').hide(); PF('tabelaProduto').clearFilters();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgForAdicionar" id="dlgAdicionar" closable="false" draggable="false"
+			resizable="false" header="Adicionar produto" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmAdicionar">
+				<h:panelGrid columns="2" id="pnAdicionar">
+					<h:outputText value="Codigo: " />
+					<h:outputText value="#{MBProduto.produto.codigo}"/>
+					<h:outputText value="Descrição: " />
+					<h:outputText value="#{MBProduto.produto.descricao}"/>
+					<h:outputText value="Quantidade " />
+					<h:inputText size="30" maxlength="50"
+						value="#{MBProduto.produto.quantidade}"
+						id = "txtAlt"
+						></h:inputText>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Adicionar"
+						actionListener="#{MBProduto.somaProduto(MBProduto.produto.codigo,MBProduto.produto.quantidade)}"
+						onclick="PF('dlgForAlterar').hide(); document.getElementById('txtAlt').value(''); PF('tabelaProduto').clearFilters();"
+						update=":formProduto:tbProduto :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						onclick="PF('dlgAlterar').hide(); PF('tabelaProduto').clearFilters();" />
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>

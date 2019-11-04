@@ -6,51 +6,50 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.farmacia.model.Produto;
+import br.com.farmacia.model.Funcionario;
 import br.com.farmacia.util.HibernateUtil;
 
-public class ProdutoHibernateDAO {
-
+public class FuncionarioHibernateDAO {
+	
 	@PersistenceContext
 	EntityManager conn = HibernateUtil.getSessionFactory();
 
-	public void salvar(Produto produto) {
+	public void salvar(Funcionario funcionario) {
 		conn.getTransaction().begin();
-		conn.persist(produto);
+		conn.persist(funcionario);
 		conn.getTransaction().commit();
 		
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Produto> listar() {
-		EntityManager conn = HibernateUtil.getSessionFactory();
+	public List<Funcionario> listar() {
 		conn.getTransaction().begin();
-		Query query = conn.createQuery("SELECT produto FROM Produto produto");
-		List<Produto> lista = query.getResultList();
+		Query query = conn.createQuery("SELECT funcionario FROM Funcionario funcionario");
+		List<Funcionario> lista = query.getResultList();
 		conn.getTransaction().commit();
 		return lista;
 	}
 
-	public Produto buscarPorId(Integer id) {
-		Produto result = new Produto();
+	public Funcionario buscarPorId(Integer id) {
+		Funcionario result = new Funcionario();
 		conn.getTransaction().begin();
-		Query query = conn.createQuery("SELECT produto FROM Produto produto WHERE produto.id=:id");
+		Query query = conn.createQuery("SELECT funcionario FROM Funcionario funcionario WHERE funcionario.id=:id");
 		query.setParameter("id", id);
-		result = (Produto) query.getSingleResult();
+		result = (Funcionario) query.getSingleResult();
 		conn.getTransaction().commit();
 		return result;
 	}
 
-	public void deletar(Produto produto) {
+	public void deletar(Funcionario funcionario) {
 		conn.getTransaction().begin();
-		conn.remove(produto);
+		conn.remove(funcionario);
 		conn.getTransaction().commit();
 		
 	}
 
-	public void atualizar(Produto produto) {
+	public void atualizar(Funcionario funcionario) {
 		conn.getTransaction().begin();
-		conn.merge(produto);
+		conn.merge(funcionario);
 		conn.getTransaction().commit();
 		
 	}

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.factory.ConexaoFactory;
 import br.com.farmacia.model.Produto;
 
@@ -20,7 +21,7 @@ public class ProdutoDAO {
 			PreparedStatement ps = ConexaoFactory.Conectar().prepareStatement(sql);
 			ps.setString(1, produto.getDescricao());
 			ps.setInt(2, produto.getQuantidade());
-			ps.setInt(3, produto.getAtivo());
+			ps.setString(3, Ativo.SIM.getDesc());
 			ps.setDouble(4, produto.getPrecoFornecedor());
 			ps.setDouble(5, produto.getPrecoFinal());
 			ps.setInt(6, produto.getIdFornecedor().getCodigo());
@@ -45,7 +46,10 @@ public class ProdutoDAO {
 				produto.setQuantidade(rs.getInt("quantidade"));
 				produto.setPrecoFornecedor(rs.getDouble("precoFornecedor"));
 				produto.setPrecoFinal(rs.getDouble("precoFinal"));
-				produto.setAtivo(rs.getInt("ativo"));
+				if(Ativo.SIM.equals(rs.getInt("ativo")))
+					produto.setAtivo(Ativo.SIM);
+				else
+					produto.setAtivo(Ativo.NAO);
 				produto.setIdFornecedor(forDao.findById(rs.getInt("fornecedorId")));
 				ps.close();
 			}
@@ -56,6 +60,7 @@ public class ProdutoDAO {
 		return produto;
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public List<Produto> findAll() {
 		String sql = "SELECT * FROM tbProduto";
 		List<Produto> lista = new ArrayList<Produto>();
@@ -70,7 +75,10 @@ public class ProdutoDAO {
 				produto.setQuantidade(rs.getInt("quantidade"));
 				produto.setPrecoFornecedor(rs.getDouble("precoFornecedor"));
 				produto.setPrecoFinal(rs.getDouble("precoFinal"));
-				produto.setAtivo(rs.getInt("ativo"));
+				if(Ativo.SIM.equals(rs.getInt("ativo")))
+					produto.setAtivo(Ativo.SIM);
+				else
+					produto.setAtivo(Ativo.NAO);
 				produto.setIdFornecedor(forDao.findById(rs.getInt("fornecedorId")));
 				if(produto.getCodigo()!=null)
 					lista.add(produto);

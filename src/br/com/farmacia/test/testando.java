@@ -20,8 +20,8 @@ public class testando {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("Farmacias");
 		EntityManager manager = factory.createEntityManager();
 		
-		manager.getTransaction().begin();
-		manager.persist(produto);
-		manager.close();
+		//manager.getTransaction().begin();
+		//manager.persist(produto);
+		//manager.close();
 	}
 }

@@ -1,19 +1,11 @@
 package br.com.farmacia.dao;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.Transient;
-import javax.transaction.TransactionScoped;
-import javax.transaction.Transactional;
-
-import org.hibernate.Session;
-import org.hibernate.engine.spi.Status;
 
 import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
@@ -29,7 +21,6 @@ public class FornecedorHibernateDAO {
 		conn.getTransaction().commit();
 	}
 	
-	@Transactional
 	@SuppressWarnings("unchecked")
 	public List<Fornecedores> listar (){
 		EntityManager conn = HibernateUtil.getSessionFactory();
