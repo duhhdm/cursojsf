@@ -38,17 +38,14 @@ public class FornecedorHibernateDAO {
 				auxF.setAtivo(Ativo.NAO);
 			lista.add(auxF);
 		}
-		conn.getTransaction().commit();
 		return lista;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Fornecedores> listarTeste (){
 		EntityManager conn = HibernateUtil.getSessionFactory();
-		conn.getTransaction().begin();
 		Query query = conn.createQuery("SELECT fornecedor FROM Fornecedores fornecedor");
 		List<Fornecedores> lista = query.getResultList();
-		conn.getTransaction().commit();
 		return lista;
 	}
 	

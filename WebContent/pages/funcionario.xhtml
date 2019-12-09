@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="/templates/modeloSistema.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:define name="menu">
+		<ui:include src="/includes/menu.xhtml" />
+	</ui:define>
+	<ui:define name="conteudo">
+		<p:commandButton value="Novo" onclick="PF('dlgForNovo').show()" />
+		<h:form id="formFuncionario">
+			<p:dataTable id="tbFuncionario" emptyMessage="Nenhum registro"
+				value="#{MBFunfionario.itens}" var="item" widgetVar="tabelaFuncionario"
+				filteredValue="#{MBFuncionario.itensFiltrados}" paginator="true" rows="10">
+				<f:facet name="header">Lista de fornecedores</f:facet>
+				<p:column headerText="Id" sortBy="#{item.codigo}" >
+					<h:outputText value="#{item.codigo}" />
+				</p:column>
+
+				<p:column headerText="Descricao" sortBy="#{item.descricao}"
+					filterBy="#{item.descricao}"> 
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash" 
+						style="margin-right:20px;" 
+						title="Icon Only"
+						onclick="PF('dlgForRemover').show()"
+						update=":frmRemover:pnRemover">
+						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.codigo}"
+							 value="#{item.codigo}" />
+						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.descricao}"
+							 value="#{item.descricao}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-script" 
+						style="margin-right:20px;" 
+						title="Icon Only"
+						onclick="PF('dlgForAlterar').show()"
+						update=":frmAlterar:pnAlterar">
+						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.codigo}"
+							 value="#{item.codigo}" />
+						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.descricao}"
+							 value="#{item.descricao}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer"></f:facet>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog widgetVar="dlgForNovo" closable="false" draggable="false"
+			resizable="false" header="Cadastrar funcionario" modal="true"
+			appendTo="@(body)">
+			<h:form>
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Descrição: " />
+					<h:inputText size="30" maxlength="50" required="true"
+						requiredMessage="O campo descrição é obrigatorio"
+						value="#{MBFornecedores.fornecedores.descricao}"
+						id="txtDesc"></h:inputText>
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Confirmar"
+						style="margin-right:20px;" 
+						actionListener="#{MBFornecedores.inserirFornecedor}"
+						oncomplete="validaCampo(xhr, status, args, 'dlgForNovo', 'tabelaFornecedor');"
+						update=":formFuncionario:tbFuncionario :msgGlobal"/>
+					<p:commandButton value="Cancelar"
+						process="@this"
+						oncomplete="PF('dlgForNovo').hide(); tabelaFornecedor.clearFilters();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgForAlterar" id="dlgAlterar" closable="false" draggable="false"
+			resizable="false" header="Alterar funcionario" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmAlterar">
+				<h:panelGrid columns="2" id="pnAlterar">
+					<h:outputText value="Codigo: " />
+					<h:outputText value="#{MBFornecedores.fornecedores.codigo}"/>
+					<h:outputText value="Descrição: " />
+					<h:inputText size="30" maxlength="50" required="true" requiredMessage="Campo descrição não pode ser vazio"
+						value="#{MBFornecedores.fornecedores.descricao}"
+						id="txtAlt"></h:inputText>
+				</h:panelGrid>
+				
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="Alterar"
+						actionListener="#{MBFornecedores.alterarFornecedor(MBFornecedores.fornecedores.codigo,MBFornecedores.fornecedores.descricao)}"
+						oncomplete="validaCampo(xhr, status, args, 'dlgForNovo', 'tabelaFornecedor');"
+						update=":formFuncionario:tbFuncionario :msgGlobal" />
+					<p:commandButton value="Cancelar" 
+						process="@this"
+						onclick="PF('dlgAlterar').hide(); tabelaFornecedor.clearFilters();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog widgetVar="dlgForRemover" id="dlgRemover" closable="false" draggable="false"
+			resizable="false" header="Remover funcionario" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmRemover">
+				<h:panelGrid columns="2" id="pnRemover">
+					<h:outputText value="Codigo: " />
+					<h:outputText value="#{MBFornecedores.fornecedores.codigo}"/>
+					<h:outputText value="Descrição: " />
+					<h:outputText value="#{MBFornecedores.fornecedores.descricao}"/>
+				</h:panelGrid>
+				
+				<h:panelGrid columns="2">
+					<p:commandButton value="remover"
+						actionListener="#{MBFornecedores.removerFornecedor(MBFornecedores.fornecedores.codigo)}"
+						onclick="PF('dlgForRemover').hide(); document.getElementById('txtDesc').value(''); PF('tabelaFornecedor').clearFilters();"
+						update=":formFuncionario:tbFuncionario :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						process="@this"
+						onclick="PF('dlgForRemover').hide(); PF('tabelaFornecedor').clearFilters();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>
