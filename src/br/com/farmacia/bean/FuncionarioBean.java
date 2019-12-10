@@ -26,7 +26,7 @@ public class FuncionarioBean {
 		try {
 			
 			List<Funcionario> lista = funcionarioDAO.listar();
-			setItens(new ArrayList<Funcionario>(lista));
+			itens = new ArrayList<Funcionario>(lista);
 			
 		}catch(Exception e) {
 			

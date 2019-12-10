@@ -13,16 +13,27 @@
 		<p:commandButton value="Novo" onclick="PF('dlgForNovo').show()" />
 		<h:form id="formFuncionario">
 			<p:dataTable id="tbFuncionario" emptyMessage="Nenhum registro"
-				value="#{MBFunfionario.itens}" var="item" widgetVar="tabelaFuncionario"
+				value="#{MBFuncionario.itens}" var="item" widgetVar="tabelaFuncionario"
 				filteredValue="#{MBFuncionario.itensFiltrados}" paginator="true" rows="10">
-				<f:facet name="header">Lista de fornecedores</f:facet>
+				<f:facet name="header">Lista de funcionarios</f:facet>
+				
 				<p:column headerText="Id" sortBy="#{item.codigo}" >
 					<h:outputText value="#{item.codigo}" />
 				</p:column>
 
-				<p:column headerText="Descricao" sortBy="#{item.descricao}"
-					filterBy="#{item.descricao}"> 
-					<h:outputText value="#{item.descricao}" />
+				<p:column headerText="Nome" sortBy="#{item.nome}"
+					filterBy="#{item.nome}"> 
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				
+				<p:column headerText="Função" sortBy="#{item.funcao}"
+					filterBy="#{item.funcao}"> 
+					<h:outputText value="#{item.funcao}" />
+				</p:column>
+				
+				<p:column headerText="Ativo" sortBy="#{item.ativo}"
+					filterBy="#{item.ativo}"> 
+					<h:outputText value="#{item.ativo}" />
 				</p:column>
 
 				<p:column headerText="Opções">
@@ -31,20 +42,20 @@
 						title="Icon Only"
 						onclick="PF('dlgForRemover').show()"
 						update=":frmRemover:pnRemover">
-						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.codigo}"
+						<f:setPropertyActionListener target="#{MBFuncionario.funcionarios.codigo}"
 							 value="#{item.codigo}" />
-						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.descricao}"
-							 value="#{item.descricao}" />
+						<f:setPropertyActionListener target="#{MBFuncionario.funcionarios.nome}"
+							 value="#{item.nome}" />
 					</p:commandButton>
 					<p:commandButton icon="ui-icon-script" 
 						style="margin-right:20px;" 
 						title="Icon Only"
 						onclick="PF('dlgForAlterar').show()"
 						update=":frmAlterar:pnAlterar">
-						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.codigo}"
+						<f:setPropertyActionListener target="#{MBFuncionario.funcionarios.codigo}"
 							 value="#{item.codigo}" />
-						<f:setPropertyActionListener target="#{MBFornecedores.fornecedores.descricao}"
-							 value="#{item.descricao}" />
+						<f:setPropertyActionListener target="#{MBFuncionario.funcionarios.nome}"
+							 value="#{item.nome}" />
 					</p:commandButton>
 				</p:column>
 				<f:facet name="footer"></f:facet>
