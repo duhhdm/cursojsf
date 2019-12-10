@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Item {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)

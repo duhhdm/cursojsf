@@ -8,7 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.farmacia.dao.FornecedorDAO;
+import br.com.farmacia.dao.FornecedorHibernateDAO;
 import br.com.farmacia.dao.ProdutoDAO;
+import br.com.farmacia.dao.ProdutoHibernateDAO;
+import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
 import br.com.farmacia.model.Produto;
 import br.com.farmacia.util.JSFUtil;
@@ -16,20 +19,20 @@ import br.com.farmacia.util.JSFUtil;
 @ManagedBean(name = "MBProduto")
 @ViewScoped
 public class ProdutoBean {
-	
+
 	private List<Produto> itens;
 	private List<Produto> itensFiltrados;
 	private List<Fornecedores> fornecedor = new ArrayList<Fornecedores>();
 	private Produto produto = new Produto();
-	private ProdutoDAO pDao = new ProdutoDAO();
-	private FornecedorDAO fDao = new FornecedorDAO();
-	
+	private ProdutoHibernateDAO pDao = new ProdutoHibernateDAO();
+	private FornecedorHibernateDAO fDao = new FornecedorHibernateDAO();
+
 	@PostConstruct
 	public void init() {
 		try {
-			itens = pDao.findAll();
-			fornecedor = listaFuncionario();
-		}catch(Exception e) {
+			itens = pDao.listar();
+			fornecedor = listaFornecedor();
+		} catch (Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
 			e.printStackTrace();
 		}
@@ -37,49 +40,81 @@ public class ProdutoBean {
 
 	public void inserirProduto() {
 		try {
-			produto.setAtivo(1);
-			pDao.insert(produto);
+			produto.setAtivo(Ativo.SIM);
+			pDao.salvar(produto);
 			init();
-			JSFUtil.adicionarMensagemSucesso("", "produto: "+produto.getDescricao()+" Inserido com sucesso");
-		}catch(Exception e) {
+			JSFUtil.adicionarMensagemSucesso("", "produto: " + produto.getDescricao() + " Inserido com sucesso");
+		} catch (Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel inserir dados");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void removerProduto(Integer id) {
+		Produto aux = new Produto();
+		aux = pDao.buscarPorId(id);
 		try {
-			pDao.remove(id);
-			init();
-			JSFUtil.adicionarMensagemSucesso("", "produto: "+produto.getDescricao()+" removido com sucesso");
-		}catch(Exception e) {
+
+			if (aux != null) {
+				pDao.deletar(produto);
+				init();
+				JSFUtil.adicionarMensagemSucesso("", "produto: " + produto.getDescricao() + " removido com sucesso");
+			}
+			else {
+				JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel remover dados");
+			}
+		} catch (Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel remover dados");
 			e.printStackTrace();
 		}
 	}
-	
-	public void alterarProduto(Integer id, String descricao,Double precoFornecedor,Double precoFinal) {
-		try{
-			pDao.update(id,descricao,precoFornecedor,precoFinal);
+
+	public void alterarProduto(Integer id, String descricao, Double precoFornecedor, Double precoFinal) {
+		Produto aux = new Produto();
+		aux = pDao.buscarPorId(id);
+		if (descricao.equals(aux.getDescricao()))
+			aux.setDescricao(descricao);
+		if (precoFornecedor != aux.getPrecoFornecedor())
+			aux.setPrecoFornecedor(precoFornecedor);
+		if (precoFinal != aux.getPrecoFinal())
+			aux.setPrecoFinal(precoFinal);
+		try {
+			pDao.atualizar(aux);
 			init();
-			JSFUtil.adicionarMensagemSucesso("", "produto: "+produto.getDescricao()+" alterado com sucesso");
-		}catch(Exception e) {
+			JSFUtil.adicionarMensagemSucesso("", "produto: " + produto.getDescricao() + " alterado com sucesso");
+		} catch (Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel remover dados");
 			e.printStackTrace();
 		}
-		
+
 	}
 	
-	public List<Fornecedores> listaFuncionario() {
-		List<Fornecedores> lista = fDao.findAll();
+	public void somaProduto(Integer id, Integer quantidade) {
+		Produto aux = new Produto();
+		aux = pDao.buscarPorId(id);
+		if(quantidade<0) {
+			init();
+			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi adicionar mais Produtos");
+		}
+		else {
+			Integer soma = aux.getQuantidade()+quantidade;
+			aux.setQuantidade(soma);
+			pDao.atualizar(aux);
+			init();
+			JSFUtil.adicionarMensagemSucesso("", "produto: Estoque do " + produto.getDescricao() + " atualizado com sucesso");
+		}
+	}
+
+	public List<Fornecedores> listaFornecedor() {
+		List<Fornecedores> lista = fDao.listarTeste();
 		List<Fornecedores> aux = new ArrayList<Fornecedores>();
-		for(Fornecedores i:lista) {
-			if(i.getAtivo()==1)
-				fornecedor.add(i);
+		for (Fornecedores i : lista) {
+			if (i.getAtivo().equals(Ativo.SIM))
+				aux.add(i);
 		}
 		return aux;
 	}
-	
+
 	public List<Produto> getItens() {
 		return itens;
 	}
@@ -104,14 +139,6 @@ public class ProdutoBean {
 		this.produto = produto;
 	}
 
-	public ProdutoDAO getpDao() {
-		return pDao;
-	}
-
-	public void setpDao(ProdutoDAO pDao) {
-		this.pDao = pDao;
-	}
-
 	public List<Fornecedores> getFornecedor() {
 		return fornecedor;
 	}
@@ -119,6 +146,5 @@ public class ProdutoBean {
 	public void setFornecedor(List<Fornecedores> fornecedor) {
 		this.fornecedor = fornecedor;
 	}
-	
-	
+
 }

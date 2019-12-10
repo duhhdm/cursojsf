@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -14,10 +16,12 @@ import br.com.farmacia.dto.enums.Ativo;
 
 @Entity
 @Table(name="tbfornecedor")
+@NamedQueries({@NamedQuery(name = "Fornecedores.listarHql",query = "SELECT fornecedor FROM Fornecedores fornecedor"),
+	@NamedQuery(name = "Fornecedores.buscaPorId", query = "SELECT fornecedor FROM Fornecedores fornecedor WHERE fornecedor.codigo = :id")})
 public class Fornecedores {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idfornecedor")
 	private Integer codigo;
 	@Column(name="descricao", length = 50, nullable=false)

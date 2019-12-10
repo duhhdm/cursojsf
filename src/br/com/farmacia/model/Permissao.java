@@ -16,7 +16,7 @@ import br.com.farmacia.dto.enums.Ativo;
 public class Permissao {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="idPermissao")
 	private Integer codigo;
 	@Column(name="descricao", length = 50, nullable=false)

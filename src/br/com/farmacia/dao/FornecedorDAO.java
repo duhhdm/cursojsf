@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.factory.ConexaoFactory;
 import br.com.farmacia.model.Fornecedores;
 
@@ -18,7 +19,7 @@ public class FornecedorDAO {
 		try {
 			PreparedStatement ps =  ConexaoFactory.Conectar().prepareStatement(sql);
 			ps.setString(1, fornecedor.getDescricao());
-			ps.setInt(2, fornecedor.getAtivo());
+			ps.setString(2, Ativo.SIM.getDesc());
 			ps.execute();
 			ps.close();
 		} catch (SQLException e) {
@@ -27,6 +28,7 @@ public class FornecedorDAO {
 		}
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public Fornecedores findById(Integer id) {
 		String sql = "SELECT * FROM tbFornecedor WHERE idFornecedor="+id;
 		Fornecedores fornecedor = new Fornecedores();
@@ -36,7 +38,10 @@ public class FornecedorDAO {
 			if(rs.next()) {
 				fornecedor.setCodigo(rs.getInt("idFornecedor"));
 				fornecedor.setDescricao(rs.getString("descricao"));
-				fornecedor.setAtivo(rs.getInt("ativo"));
+				if(Ativo.SIM.equals(rs.getString("ativo")))
+					fornecedor.setAtivo(Ativo.SIM);
+				else
+					fornecedor.setAtivo(Ativo.NAO);
 			}
 			ps.close();
 		} catch (SQLException e) {
@@ -46,6 +51,7 @@ public class FornecedorDAO {
 		return fornecedor;
 	}
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public List<Fornecedores> findAll(){
 		String sql = "SELECT * FROM tbFornecedor";
 		List<Fornecedores> lista = new ArrayList<Fornecedores>();
@@ -56,7 +62,10 @@ public class FornecedorDAO {
 				Fornecedores fornecedor = new Fornecedores();
 				fornecedor.setCodigo(rs.getInt("idFornecedor"));
 				fornecedor.setDescricao(rs.getString("descricao"));
-				fornecedor.setAtivo(rs.getInt("ativo"));
+				if(Ativo.SIM.equals(rs.getString("ativo")))
+					fornecedor.setAtivo(Ativo.SIM);
+				else
+					fornecedor.setAtivo(Ativo.NAO);
 				if(fornecedor.getCodigo()!=null)
 					lista.add(fornecedor);
 			}
