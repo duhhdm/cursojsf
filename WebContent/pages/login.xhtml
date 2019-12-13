@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="/templates/modeloSistema.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+		<div align="center" style="margin-top:218px;">
+			<h:form id="formProduto">
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Usuario: "></h:outputLabel>
+					<h:inputText size="30" maxlength="50" value="#{MBLogin.usuario}"
+						id="txtAlt"></h:inputText>
+					<h:outputLabel value="Senha: "></h:outputLabel>
+					<h:inputSecret size="30" maxlength="50" value="#{MBLogin.senha}"></h:inputSecret>
+					<!-- <h:outputText value="#{MBLogin.result}"></h:outputText> -->
+					<p:commandButton value="Adicionar" update= ":formProduto :msgGlobal" actionListener = "#{MBLogin.entrarFuncionario()}"/>
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
