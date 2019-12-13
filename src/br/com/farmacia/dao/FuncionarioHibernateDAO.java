@@ -30,7 +30,7 @@ public class FuncionarioHibernateDAO {
 		return lista;
 	}
 
-	public Funcionario buscarPorId(Integer id) {
+	public Funcionario buscarPorId(Long id) {
 		Funcionario result = new Funcionario();
 		conn.getTransaction().begin();
 		Query query = conn.createQuery("SELECT funcionario FROM Funcionario funcionario WHERE funcionario.id=:id");
