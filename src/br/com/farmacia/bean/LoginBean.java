@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import br.com.farmacia.dao.FuncionarioHibernateDAO;
 import br.com.farmacia.model.Funcionario;
 import br.com.farmacia.util.JSFUtil;
+import br.com.farmacia.util.SessionUtil;
 
 @ManagedBean(name = "MBLogin")
 @SessionScoped
@@ -21,20 +22,21 @@ public class LoginBean {
 	private FuncionarioHibernateDAO funDAO = new FuncionarioHibernateDAO();
 	private String usuario = new String();
 	private String senha = new String();
-	private String result = "";
+	private String result = "Logado";
 
 	public void entrarFuncionario() throws IOException {
-			funcionario = funDAO.buscarPorId(Long.parseLong(usuario));
-			if (funcionario.getCodigo() == Long.parseLong(usuario)) {
-				if (funcionario.getSenha().equals(senha)) {
-					result = "sim";
-					FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pages/index.xhtml");
-					
-				}
-			} else {
-				result = "nao";
-				JSFUtil.adicionarMensagemSucesso("", "ERRO: Acesso incorreto.");
+		System.out.println(SessionUtil.getParam(result));
+		funcionario = funDAO.buscarPorId(Long.parseLong(usuario));
+		if (funcionario.getCodigo() == Long.parseLong(usuario)) {
+			if (funcionario.getSenha().equals(senha)) {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pages/index.xhtml");
+				SessionUtil.setParam(result, funcionario.getCodigo());
+				System.out.println(SessionUtil.getParam(result));
+				System.out.println(SessionUtil.getSession());
 			}
+		} else {
+			JSFUtil.adicionarMensagemSucesso("", "ERRO: Acesso incorreto.");
+		}
 	}
 
 	public Funcionario getFuncionario() {

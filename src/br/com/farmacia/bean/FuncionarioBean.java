@@ -1,38 +1,49 @@
 package br.com.farmacia.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.farmacia.dao.FuncionarioHibernateDAO;
 import br.com.farmacia.model.Funcionario;
 import br.com.farmacia.util.JSFUtil;
+import br.com.farmacia.util.SessionUtil;
 
-@ManagedBean(name="MBFuncionario")
+@ManagedBean(name = "MBFuncionario")
 @ViewScoped
 public class FuncionarioBean {
-	
+
 	private ArrayList<Funcionario> itens;
 	private ArrayList<Funcionario> itensFiltrados;
 	private Funcionario funcionarios = new Funcionario();
-	
+	private String usuario = SessionUtil.getParam("Logado").toString();
 	private FuncionarioHibernateDAO funcionarioDAO = new FuncionarioHibernateDAO();
-	
+
 	@PostConstruct
 	public void preparaPesquisa() {
-		try {
-			
-			List<Funcionario> lista = funcionarioDAO.listar();
-			itens = new ArrayList<Funcionario>(lista);
-			
-		}catch(Exception e) {
-			
-			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
-			e.printStackTrace();
-			
+		if (usuario != null) {
+			try {
+				System.out.println(SessionUtil.getParam("Logado"));
+				List<Funcionario> lista = funcionarioDAO.listar();
+				itens = new ArrayList<Funcionario>(lista);
+
+			} catch (Exception e) {
+
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
+				e.printStackTrace();
+
+			}
+		}else {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pages/login.xhtml");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -59,5 +70,5 @@ public class FuncionarioBean {
 	public void setFuncionarios(Funcionario funcionarios) {
 		this.funcionarios = funcionarios;
 	}
-	
+
 }

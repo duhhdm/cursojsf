@@ -15,6 +15,7 @@ import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
 import br.com.farmacia.model.Produto;
 import br.com.farmacia.util.JSFUtil;
+import br.com.farmacia.util.SessionUtil;
 
 @ManagedBean(name = "MBProduto")
 @ViewScoped
@@ -26,12 +27,13 @@ public class ProdutoBean {
 	private Produto produto = new Produto();
 	private ProdutoHibernateDAO pDao = new ProdutoHibernateDAO();
 	private FornecedorHibernateDAO fDao = new FornecedorHibernateDAO();
-
+	private String usuario = SessionUtil.getParam("Logado").toString();
 	@PostConstruct
 	public void init() {
 		try {
 			itens = pDao.listar();
 			fornecedor = listaFornecedor();
+			System.out.println(usuario);
 		} catch (Exception e) {
 			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
 			e.printStackTrace();

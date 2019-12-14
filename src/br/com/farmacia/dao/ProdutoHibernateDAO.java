@@ -24,10 +24,8 @@ public class ProdutoHibernateDAO {
 	@SuppressWarnings("unchecked")
 	public List<Produto> listar() {
 		EntityManager conn = HibernateUtil.getSessionFactory();
-		conn.getTransaction().begin();
 		Query query = conn.createQuery("SELECT produto FROM Produto produto");
 		List<Produto> lista = query.getResultList();
-		conn.getTransaction().commit();
 		return lista;
 	}
 
