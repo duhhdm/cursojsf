@@ -13,7 +13,7 @@
 				<p:menuitem value="Empresa" url="#" />
 				<p:menuitem value="Site" url="#" />
 				<p:separator />
-				<p:menuitem value="Sair" url="https://primefaces.org" />
+				<p:menuitem value="Sair" actionListener="#{MBLogin.logout()}" />
 			</p:submenu>
 
 			<p:submenu label="Cadastros">
@@ -36,16 +36,20 @@
 			</f:facet>
 		</p:menubar>
 	</h:form>
-
-	<p:dialog widgetVar="dlgForPermissao" closable="false" draggable="false"
-		resizable="false" header="Incluir Permissão" modal="true"
-		appendTo="@(body)">
+	
+	<p:dialog widgetVar="dlgForPermissao" closable="false"
+		draggable="false" resizable="false" header="Incluir Permissão"
+		modal="true" appendTo="@(body)">
 
 	</p:dialog>
-	
+
 	<p:dialog widgetVar="dlgForSenha" closable="false" draggable="false"
 		resizable="false" header="Alterar Senha" modal="true"
 		appendTo="@(body)">
-
+		<h:form id="formTrocaSenha">
+			<h:outputLabel value="Nova Senha: "></h:outputLabel>
+			<h:inputSecret value = "#{MBLogin.novaSenha}"></h:inputSecret>
+			<h:commandButton value="Confirmar" actionListener="#{MBLogin.trocarSenha()}"></h:commandButton>
+		</h:form>
 	</p:dialog>
 </ui:composition>
