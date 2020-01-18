@@ -18,10 +18,10 @@
 		appendTo="@(body)">
 		<h:form id="formTrocaSenha">
 			<h:panelGrid columns="2">
-				<h:outputLabel value="Nova Senha: "></h:outputLabel>
+				<p:outputLabel value="Nova Senha: "></p:outputLabel>
 				<h:inputSecret value="#{MBLogin.novaSenha}"></h:inputSecret>
-				<h:commandButton value="Confirmar"
-					actionListener="#{MBLogin.trocarSenha()}"></h:commandButton>
+				<p:commandButton value="Confirmar"
+					actionListener="#{MBLogin.trocarSenha()}"></p:commandButton>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

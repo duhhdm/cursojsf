@@ -21,26 +21,27 @@ public class FuncionarioBean {
 	private ArrayList<Funcionario> itens;
 	private ArrayList<Funcionario> itensFiltrados;
 	private Funcionario funcionarios = new Funcionario();
-	private String usuario = SessionUtil.getParam("Logado").toString();
+	
+	private String usuario = null;
 	private FuncionarioHibernateDAO funcionarioDAO = new FuncionarioHibernateDAO();
 
 	@PostConstruct
 	public void preparaPesquisa() {
-		if (usuario != null) {
+		if(SessionUtil.getParam("Logado")!=null)
+			usuario =SessionUtil.getParam("Logado").toString();
+		if (usuario!=null && !usuario.equals("")) {
 			try {
 				System.out.println(SessionUtil.getParam("Logado"));
 				List<Funcionario> lista = funcionarioDAO.listar();
 				itens = new ArrayList<Funcionario>(lista);
-
 			} catch (Exception e) {
-
 				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
 				e.printStackTrace();
-
 			}
 		}else {
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("faces/pages/login.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro na sessão");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
