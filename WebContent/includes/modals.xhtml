@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="/templates/modeloSistema.xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:dialog widgetVar="dlgForPermissao" closable="false"
+		draggable="false" resizable="false" header="Incluir Permissão"
+		modal="true" appendTo="@(body)">
+
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgForSenha" closable="false" draggable="false"
+		resizable="false" header="Alterar Senha" modal="true"
+		appendTo="@(body)">
+		<h:form id="formTrocaSenha">
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Nova Senha: "></p:outputLabel>
+				<h:inputSecret value="#{MBLogin.novaSenha}"></h:inputSecret>
+				<p:commandButton value="Confirmar"
+					actionListener="#{MBLogin.trocarSenha()}"></p:commandButton>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+</ui:composition>

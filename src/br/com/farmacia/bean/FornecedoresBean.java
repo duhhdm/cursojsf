@@ -1,11 +1,13 @@
 package br.com.farmacia.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
 
 import br.com.farmacia.dao.FornecedorDAO;
@@ -14,6 +16,7 @@ import br.com.farmacia.dto.FornecedorDTO;
 import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
 import br.com.farmacia.util.JSFUtil;
+import br.com.farmacia.util.SessionUtil;
 
 @ManagedBean(name = "MBFornecedores")
 @ViewScoped
@@ -23,27 +26,39 @@ public class FornecedoresBean {
 	private ArrayList<FornecedorDTO> itens;
 	private ArrayList<FornecedorDTO> itensFiltrados;
 	private Fornecedores fornecedores = new Fornecedores();
+	private String usuario = new String();
 	
 	//conexao dao
 	private FornecedorHibernateDAO forDao = new FornecedorHibernateDAO();
 
 	@PostConstruct
 	public void preparaPesquisa() {
-		try {
-			List<Fornecedores> lista = forDao.listarTeste();
-			List<FornecedorDTO> listaAtivos = new ArrayList<FornecedorDTO>();
-			for( Fornecedores aux: lista) {
-				FornecedorDTO aux1 = new FornecedorDTO();
-				aux1.setCodigo(aux.getCodigo());
-				aux1.setDescricao(aux.getDescricao());
-				if(aux.getAtivo().equals(Ativo.SIM)) {
-					listaAtivos.add(aux1);
+		if (SessionUtil.getParam("Logado") != null)
+			usuario = SessionUtil.getParam("Logado").toString();
+		if (usuario != null && !usuario.equals("")) {
+			try {
+				List<Fornecedores> lista = forDao.listarTeste();
+				List<FornecedorDTO> listaAtivos = new ArrayList<FornecedorDTO>();
+				for( Fornecedores aux: lista) {
+					FornecedorDTO aux1 = new FornecedorDTO();
+					aux1.setCodigo(aux.getCodigo());
+					aux1.setDescricao(aux.getDescricao());
+					if(aux.getAtivo().equals(Ativo.SIM)) {
+						listaAtivos.add(aux1);
+					}
 				}
+				itens = new ArrayList<FornecedorDTO>(listaAtivos);
+			}catch(Exception e) {
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
+				e.printStackTrace();
 			}
-			itens = new ArrayList<FornecedorDTO>(listaAtivos);
-		}catch(Exception e) {
-			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
-			e.printStackTrace();
+		}else {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro na sessão");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -118,6 +133,5 @@ public class FornecedoresBean {
 	public void setItensFiltrados(ArrayList<FornecedorDTO> itensFiltrados) {
 		this.itensFiltrados = itensFiltrados;
 	}
-
 	
 }

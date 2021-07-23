@@ -24,4 +24,40 @@ public class Permissao {
 	@Column(name="ativo", nullable = false)
 	@Enumerated(value=EnumType.STRING)
 	private Ativo ativo;
+	
+	public Permissao() {
+		
+	}
+	
+	public Permissao(Integer codigo, String descricao, Ativo ativo) {
+		super();
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.ativo = ativo;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Ativo getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Ativo ativo) {
+		this.ativo = ativo;
+	}
+	
 }

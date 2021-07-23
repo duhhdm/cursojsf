@@ -15,6 +15,8 @@
    <class>br.com.farmacia.model.Produto</class>
    <class>br.com.farmacia.model.Funcionario</class>
    <class>br.com.farmacia.model.Venda</class>
+   <class>br.com.farmacia.model.Permissao</class>
+   <class>br.com.farmacia.model.PermissaoxUsuario</class>
 
    <properties>
     <!-- dados da conexao -->
@@ -25,9 +27,9 @@
 
     <!--  atualiza o banco, gera as tabelas se for preciso -->
     <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
-    <property name="hibernate.show.sql" value="true"/>
-    <property name="hibernate.format.sql" value="true"/>
     <property name="hibernate.hbm2ddl.auto" value="update" />
+    <property name="hibernate.show_sql" value="true"/>
+    <property name="hibernate.format_sql" value="true"/>
     
 
    </properties>

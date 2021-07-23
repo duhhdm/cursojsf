@@ -1,5 +1,6 @@
 package br.com.farmacia.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -23,21 +24,23 @@ public class FuncionarioHibernateDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Funcionario> listar() {
-		conn.getTransaction().begin();
 		Query query = conn.createQuery("SELECT funcionario FROM Funcionario funcionario");
 		List<Funcionario> lista = query.getResultList();
-		conn.getTransaction().commit();
 		return lista;
 	}
 
 	public Funcionario buscarPorId(Long id) {
 		Funcionario result = new Funcionario();
-		conn.getTransaction().begin();
 		Query query = conn.createQuery("SELECT funcionario FROM Funcionario funcionario WHERE funcionario.id=:id");
 		query.setParameter("id", id);
-		result = (Funcionario) query.getSingleResult();
-		conn.getTransaction().commit();
-		return result;
+		try{
+			result = (Funcionario) query.getSingleResult();
+			return result;
+		}catch(Exception e) {
+			return null;
+		}
+		
+		
 	}
 
 	public void deletar(Funcionario funcionario) {

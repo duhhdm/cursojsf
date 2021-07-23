@@ -1,11 +1,13 @@
 package br.com.farmacia.bean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.farmacia.dao.FornecedorDAO;
 import br.com.farmacia.dao.FornecedorHibernateDAO;
@@ -15,6 +17,7 @@ import br.com.farmacia.dto.enums.Ativo;
 import br.com.farmacia.model.Fornecedores;
 import br.com.farmacia.model.Produto;
 import br.com.farmacia.util.JSFUtil;
+import br.com.farmacia.util.SessionUtil;
 
 @ManagedBean(name = "MBProduto")
 @ViewScoped
@@ -26,15 +29,28 @@ public class ProdutoBean {
 	private Produto produto = new Produto();
 	private ProdutoHibernateDAO pDao = new ProdutoHibernateDAO();
 	private FornecedorHibernateDAO fDao = new FornecedorHibernateDAO();
+	private String usuario = new String();
 
 	@PostConstruct
 	public void init() {
-		try {
-			itens = pDao.listar();
-			fornecedor = listaFornecedor();
-		} catch (Exception e) {
-			JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
-			e.printStackTrace();
+		if (SessionUtil.getParam("Logado") != null)
+			usuario = SessionUtil.getParam("Logado").toString();
+		if (usuario != null && !usuario.equals("")) {
+			try {
+				itens = pDao.listar();
+				fornecedor = listaFornecedor();
+				System.out.println(usuario);
+			} catch (Exception e) {
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro desconhecido");
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+				JSFUtil.adicionarMensagemErro("", "ERRO: Ocorreu um erro na sessão");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -59,8 +75,7 @@ public class ProdutoBean {
 				pDao.deletar(produto);
 				init();
 				JSFUtil.adicionarMensagemSucesso("", "produto: " + produto.getDescricao() + " removido com sucesso");
-			}
-			else {
+			} else {
 				JSFUtil.adicionarMensagemErro("", "ERRO: Não foi possivel remover dados");
 			}
 		} catch (Exception e) {
@@ -88,20 +103,20 @@ public class ProdutoBean {
 		}
 
 	}
-	
+
 	public void somaProduto(Integer id, Integer quantidade) {
 		Produto aux = new Produto();
 		aux = pDao.buscarPorId(id);
-		if(quantidade<0) {
+		if (quantidade < 0) {
 			init();
 			JSFUtil.adicionarMensagemErro("", "ERRO: Não foi adicionar mais Produtos");
-		}
-		else {
-			Integer soma = aux.getQuantidade()+quantidade;
+		} else {
+			Integer soma = aux.getQuantidade() + quantidade;
 			aux.setQuantidade(soma);
 			pDao.atualizar(aux);
 			init();
-			JSFUtil.adicionarMensagemSucesso("", "produto: Estoque do " + produto.getDescricao() + " atualizado com sucesso");
+			JSFUtil.adicionarMensagemSucesso("",
+					"produto: Estoque do " + produto.getDescricao() + " atualizado com sucesso");
 		}
 	}
 
